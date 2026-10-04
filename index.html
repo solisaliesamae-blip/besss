@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Little Message for You</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(40,120,90,.22), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(30,100,75,.20), transparent 30%),
+        linear-gradient(135deg, #01140f, #03271e, #00100c);
+
+    color: #e4f4ed;
+    font-family: "Cormorant Garamond", serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 15px;
+    overflow-x: hidden;
+}
+
+/* =========================
+   STARS
+========================= */
+
+.stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #b8e6d2;
+    box-shadow: 0 0 10px #8ed0b4;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+.star:nth-child(1) { top: 8%; left: 12%; }
+.star:nth-child(2) { top: 18%; left: 80%; animation-delay: 1s; }
+.star:nth-child(3) { top: 30%; left: 30%; animation-delay: 2s; }
+.star:nth-child(4) { top: 48%; left: 90%; animation-delay: .5s; }
+.star:nth-child(5) { top: 65%; left: 8%; animation-delay: 1.5s; }
+.star:nth-child(6) { top: 75%; left: 72%; animation-delay: 2s; }
+.star:nth-child(7) { top: 88%; left: 42%; animation-delay: .7s; }
+.star:nth-child(8) { top: 12%; left: 52%; animation-delay: 1.7s; }
+
+@keyframes twinkle {
+    0%,100% {
+        opacity: .2;
+        transform: scale(.7);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+}
+
+/* =========================
+   ENVELOPE AREA
+========================= */
+
+.scene {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+.instruction {
+    font-family: "Great Vibes", cursive;
+    font-size: 30px;
+    color: #b9e8d3;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(130,210,175,.3);
+}
+
+/* Envelope */
+
+.envelope {
+    width: 340px;
+    height: 230px;
+    margin: auto;
+    position: relative;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+/* Back of envelope */
+
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, #07503d, #03291f);
+    border: 1px solid rgba(164,220,198,.35);
+    border-radius: 6px;
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.55),
+        0 0 25px rgba(45,150,110,.18);
+}
+
+/* Letter */
+
+.letter {
+    position: absolute;
+    width: 88%;
+    height: 200px;
+    left: 6%;
+    top: 15px;
+
+    background: #eef8f3;
+    color: #173d31;
+
+    border-radius: 4px;
+    padding: 20px;
+
+    transition:
+        transform 1.2s ease,
+        top 1.2s ease,
+        opacity .5s ease;
+
+    z-index: 2;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.35);
+
+    overflow: hidden;
+}
+
+.letter h2 {
+    font-family: "Great Vibes", cursive;
+    font-size: 34px;
+    font-weight: normal;
+    color: #14533f;
+}
+
+.letter p {
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+/* Envelope front */
+
+.envelope-front {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 58%;
+
+    background: linear-gradient(145deg, #064634, #02281f);
+
+    clip-path: polygon(
+        0 0,
+        50% 55%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+
+    z-index: 4;
+
+    border-radius: 0 0 6px 6px;
+
+    border-top: 1px solid rgba(150,220,190,.25);
+}
+
+/* Envelope flap */
+
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 55%;
+
+    background: linear-gradient(145deg, #0a5a44, #063c2e);
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    transform-origin: top center;
+    transition: transform 1s ease;
+
+    z-index: 5;
+
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,.25));
+}
+
+/* Seal */
+
+.seal {
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    background: #174f3d;
+
+    border: 2px solid #9bd5bc;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #c9eee0;
+    font-family: "Great Vibes", cursive;
+    font-size: 24px;
+
+    left: 50%;
+    top: 48%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 6;
+
+    box-shadow:
+        0 0 15px rgba(110,210,170,.3);
+
+    transition: opacity .5s ease;
+}
+
+/* =========================
+   OPEN STATE
+========================= */
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope.open .letter {
+    top: -170px;
+    transform: translateY(-10px);
+    z-index: 3;
+}
+
+.envelope.open .seal {
+    opacity: 0;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message-container {
+    display: none;
+    opacity: 0;
+    transform: translateY(30px);
+
+    margin-top: 210px;
+
+    background: rgba(3,31,24,.92);
+
+    border: 1px solid rgba(144,213,186,.35);
+
+    border-radius: 22px;
+
+    padding: 35px 25px;
+
+    text-align: left;
+
+    box-shadow:
+        0 0 30px rgba(40,140,105,.18),
+        0 20px 60px rgba(0,0,0,.45);
+
+    backdrop-filter: blur(12px);
+
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.message-container.show {
+    display: block;
+    animation: messageAppear 1s forwards;
+}
+
+@keyframes messageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+.message-title {
+    text-align: center;
+
+    font-family: "Great Vibes", cursive;
+
+    font-size: 48px;
+
+    font-weight: normal;
+
+    color: #bdebd8;
+
+    text-shadow: 0 0 15px rgba(130,220,180,.25);
+
+    margin-bottom: 10px;
+}
+
+.divider {
+    width: 90px;
+    height: 1px;
+
+    background: #80c9aa;
+
+    margin: 0 auto 25px;
+
+    box-shadow: 0 0 10px #80c9aa;
+}
+
+.message {
+    font-size: 19px;
+    line-height: 1.75;
+    color: #d8eee5;
+}
+
+.message p {
+    margin-bottom: 20px;
+}
+
+.highlight {
+    color: #a8dfc6;
+    font-style: italic;
+}
+
+.closing {
+    text-align: center;
+
+    font-family: "Great Vibes", cursive;
+
+    font-size: 31px;
+
+    color: #a9ddc5;
+
+    margin-top: 25px;
+}
+
+.heart {
+    text-align: center;
+
+    margin-top: 10px;
+
+    font-size: 24px;
+
+    color: #8ed0b2;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.close-button {
+    display: block;
+
+    margin: 25px auto 0;
+
+    padding: 10px 22px;
+
+    background: transparent;
+
+    border: 1px solid #74b99d;
+
+    color: #b9e5d2;
+
+    border-radius: 20px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.close-button:hover {
+    background: rgba(100,180,145,.12);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    .envelope {
+        width: 300px;
+        height: 205px;
+    }
+
+    .instruction {
+        font-size: 27px;
+    }
+
+    .letter {
+        height: 175px;
+    }
+
+    .letter h2 {
+        font-size: 30px;
+    }
+
+    .letter p {
+        font-size: 14px;
+    }
+
+    .message-container {
+        margin-top: 190px;
+        padding: 30px 20px;
+    }
+
+    .message-title {
+        font-size: 42px;
+    }
+
+    .message {
+        font-size: 18px;
+    }
+
+    .closing {
+        font-size: 27px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Stars -->
+<div class="stars">
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+</div>
+
+
+<div class="scene">
+
+    <div class="instruction">
+        Tap the envelope to open ♡
+    </div>
+
+
+    <!-- ENVELOPE -->
+
+    <div class="envelope" id="envelope">
+
+        <div class="envelope-back"></div>
+
+        <!-- Letter preview -->
+
+        <div class="letter">
+            <h2>For You, Ry</h2>
+            <p>A little reminder from someone who cares...</p>
+        </div>
+
+        <!-- Front -->
+
+        <div class="envelope-front"></div>
+
+        <!-- Flap -->
+
+        <div class="flap"></div>
+
+        <!-- Seal -->
+
+        <div class="seal">
+            ♡
+        </div>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div class="message-container" id="message">
+
+        <div class="message-title">
+            For You, Ry
+        </div>
+
+        <div class="divider"></div>
+
+
+        <div class="message">
+
+            <p>
+                Don't let other people control your emotions.
+                You don't always have to be too understanding of everyone.
+                Sometimes, you also need to protect your own peace.
+            </p>
+
+
+            <p>
+                Choose your circle of friends wisely.
+                Stay close to the people who genuinely value you,
+                respect you, and appreciate having you in their lives.
+            </p>
+
+
+            <p>
+                It's okay to open up, but
+                <span class="highlight">
+                    don't overshare your personal problems with just anyone.
+                </span>
+                Learn to know who is truly trustworthy and who genuinely
+                wants to help you.
+            </p>
+
+
+            <p>
+                Not everyone will have the same heart as you.
+                You are someone who understands people deeply,
+                but please remember that you don't have to carry
+                everyone's problems while forgetting about yourself.
+            </p>
+
+
+            <p>
+                Focus on yourself and on becoming the person you want to be.
+                Don't let other people's words define your worth.
+                People will always have something to say,
+                but you don't have to let their opinions control your peace.
+            </p>
+
+
+            <p>
+                You're a genuine person, Ry.
+                I hope you always keep that kindness in you.
+                <span class="highlight">
+                    Please don't let someone who doesn't value you as a friend
+                    break the good heart you have.
+                </span>
+            </p>
+
+
+            <p>
+                Stay genuine. Stay kind.
+                But remember to choose yourself, too.
+                You deserve people who give you the same respect,
+                understanding, and sincerity that you give them.
+            </p>
+
+        </div>
+
+
+        <div class="closing">
+            Don't lose yourself for people who don't value you.
+        </div>
+
+        <div class="heart">
+            ♡
+        </div>
+
+        <button class="close-button" onclick="closeMessage()">
+            Close Letter
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const envelope = document.getElementById("envelope");
+const message = document.getElementById("message");
+
+envelope.addEventListener("click", function() {
+
+    if (!envelope.classList.contains("open")) {
+
+        envelope.classList.add("open");
+
+        setTimeout(() => {
+            message.classList.add("show");
+        }, 900);
+
+    }
+
+});
+
+
+function closeMessage() {
+
+    message.classList.remove("show");
+
+    setTimeout(() => {
+
+        envelope.classList.remove("open");
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }, 500);
+
+}
+
+</script>
+
+</body>
+</html>
